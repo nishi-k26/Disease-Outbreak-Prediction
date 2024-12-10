@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disease Outbreak by Region</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #70e1f5, #ffd194);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 1rem;
+            background-color: #70e1f5;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #5ac3d6;
+        }
+
+        .chart {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .chart img {
+            display: inline-block; /* Ensures the image aligns within the centered div */
+            max-width: 100%; /* Ensures the image is responsive */
+            height: auto;
+        }
+    
+        .chart h2 {
+            text-align: center; /* Centers the heading text */
+        }
+
+        .precautions-list {
+            margin-top: 20px;
+        }
+
+        li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" action="/all-states">
+        <h1>Disease Outbreak by Region</h1>
+        <form method="POST">
+            <label for="region">Select Region:</label>
+            <select id="region" name="region" required>
+                <option value="Central">Central</option>
+                <option value="South">South</option>
+                <option value="North">North</option>
+                <option value="West">West</option>
+                <option value="East">East</option>
+            </select>
+
+            <label for="season">Select Season:</label>
+            <select id="season" name="season" required>
+                <option value="Summer">Summer</option>
+                <option value="Monsoon">Monsoon</option>
+                <option value="Winter">Winter</option>
+                <option value="Autumn">Autumn</option>
+            </select>
+
+            <label for="threshold">Minimum Cases:</label>
+            <input type="number" id="threshold" name="threshold" placeholder="Enter minimum cases" required>
+            <br>
+            <button type="submit">Submit</button>
+        </form>
+        <br><br>
+        {% if chart_base64 %}
+            <div class="chart">
+            <h2>Diseases in {{ region }} Region during {{ season }}</h2>
+            <img src="data:image/png;base64,{{ chart_base64 }}" alt="Disease Chart">
+            </div>
+        {% endif %}
+        <br><br>
+        {% if precautions %}
+        <h2>Precautions:</h2>
+        <ul class="precautions-list">
+            {% for precaution in precautions %}
+            <li>{{ precaution }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+</body>
+</html>
+
